@@ -1,34 +1,11 @@
-# Games Cards
-> JS background Changer when click on game card
-using:
-- HTML
-- CSS
-- Javascript
-- Tilt.js
+# Games-Cards-JS
 
-### Some code Challenges in this repo :'
-```css
-/*Fade Effect*/
+JS background Changer when click on game card
 
-@keyframes fade {
-    from {
-        opacity: 0.2;
-    }
+### 🔗 [View Live Demo](https://fadyehabamer.github.io/games/Games-Cards-JS/)
 
-    to {
-        opacity: 1;
-    }
+**Built with:** CSS
+**Topics:** `css`, `javascript`, `html5`, `tiltjs`
 
-}
-
-/*Blur Effect*/
-
-filter: blur(5px);
-
-```
-```javascript
-// Target image inside a looped div
-
-let imgsrc = card.getElementsByTagName('img')[0].src
-
-```
+---
+↩ Part of the [**games**](../) collection · [all collections](https://github.com/fadyehabamer?tab=repositories) · [@fadyehabamer](https://github.com/fadyehabamer)
