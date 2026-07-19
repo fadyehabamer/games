@@ -1,0 +1,102 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+}
+
+html {
+    overflow-x: hidden !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Chrome, Safari, Opera */
+@keyframes fade {
+    from {
+        opacity: 0.2;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+body {
+    width: 100vw;
+    min-height: 100vh;
+    background-size: cover;
+    animation: fade 3s;
+    transition: background-image 1s ease-in-out;
+}
+
+.bg-img {
+    width: 100vw;
+    min-height: 130vh;
+    filter: blur(5px);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.container .card {
+    width: 250px;
+    height: 350px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    margin-bottom: 35px;
+}
+
+.container .card:hover {
+    cursor: pointer;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+@media (max-width:700px) {
+    .bg-img {
+        height: 180vh;
+    }
+}
