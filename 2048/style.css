@@ -1,0 +1,110 @@
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --border: #30363d;
+  --ink: #e6edf3;
+  --muted: #8b949e;
+  --accent: #58a6ff;
+  --cell: #21262d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+.game {
+  width: min(100%, 440px);
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: -0.02em;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
+
+button:focus-visible,
+.board:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.help {
+  color: var(--muted);
+  margin: 12px 0 16px;
+  font-size: 0.95rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  aspect-ratio: 1;
+  width: 100%;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--cell);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 7vw, 2rem);
+  color: #1b1b1b;
+}
+
+.tile-2 { background: #eee4da; }
+.tile-4 { background: #ede0c8; }
+.tile-8 { background: #f2b179; color: #fff; }
+.tile-16 { background: #f59563; color: #fff; }
+.tile-32 { background: #f67c5f; color: #fff; }
+.tile-64 { background: #f65e3b; color: #fff; }
+.tile-128 { background: #edcf72; color: #fff; font-size: clamp(1rem, 6vw, 1.7rem); }
+.tile-256 { background: #edcc61; color: #fff; font-size: clamp(1rem, 6vw, 1.7rem); }
+.tile-512 { background: #edc850; color: #fff; font-size: clamp(1rem, 6vw, 1.7rem); }
+.tile-1024 { background: #edc53f; color: #fff; font-size: clamp(0.85rem, 5vw, 1.4rem); }
+.tile-2048 { background: #edc22e; color: #fff; font-size: clamp(0.85rem, 5vw, 1.4rem); }
+.tile-super { background: #3c3a32; color: #fff; font-size: clamp(0.8rem, 4.5vw, 1.2rem); }
