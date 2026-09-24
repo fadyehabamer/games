@@ -139,6 +139,30 @@
     play(direction);
   });
 
+  const SWIPE_MIN = 24;
+  let swipeStart = null;
+
+  boardEl.addEventListener('pointerdown', (event) => {
+    swipeStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  });
+
+  boardEl.addEventListener('pointerup', (event) => {
+    if (!swipeStart || swipeStart.id !== event.pointerId) return;
+    const dx = event.clientX - swipeStart.x;
+    const dy = event.clientY - swipeStart.y;
+    swipeStart = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < SWIPE_MIN) return;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      play(dx > 0 ? 'right' : 'left');
+    } else {
+      play(dy > 0 ? 'down' : 'up');
+    }
+  });
+
+  boardEl.addEventListener('pointercancel', () => {
+    swipeStart = null;
+  });
+
   newGameBtn.addEventListener('click', newGame);
   undoBtn.addEventListener('click', undo);
   tryAgainBtn.addEventListener('click', () => {

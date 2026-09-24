@@ -123,6 +123,9 @@ button:focus-visible,
   border-radius: 12px;
   aspect-ratio: 1;
   width: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .tile {
@@ -189,4 +192,24 @@ button:focus-visible,
   margin: 12px 0 0;
   color: var(--muted);
   text-align: center;
+}
+
+@media (max-width: 400px) {
+  .game {
+    padding: 16px 12px 32px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .score-box {
+    min-width: 60px;
+    padding: 4px 8px;
+  }
+
+  .board {
+    gap: 8px;
+    padding: 8px;
+  }
 }
