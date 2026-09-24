@@ -153,6 +153,21 @@ button:focus-visible {
   color: var(--o);
 }
 
+.cell.pop {
+  animation: pop 180ms ease-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .cell.win {
   background: #1f2f1f;
   border-color: #3fb950;
@@ -180,4 +195,29 @@ button:focus-visible {
 
 .actions button:hover {
   border-color: var(--accent);
+}
+
+@media (max-width: 400px) {
+  .game {
+    padding: 16px 12px 32px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  fieldset {
+    flex-basis: 100%;
+  }
+
+  fieldset label {
+    display: inline-flex;
+    margin-right: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell.pop {
+    animation: none;
+  }
 }

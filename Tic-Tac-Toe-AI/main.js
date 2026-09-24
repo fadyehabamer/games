@@ -86,7 +86,9 @@
 
   function render() {
     cells.forEach((btn, i) => {
-      btn.textContent = board[i] || '';
+      const mark = board[i] || '';
+      btn.classList.toggle('pop', mark !== '' && btn.textContent === '');
+      btn.textContent = mark;
       btn.classList.toggle('x', board[i] === 'X');
       btn.classList.toggle('o', board[i] === 'O');
       btn.classList.toggle('win', winLine.includes(i));
