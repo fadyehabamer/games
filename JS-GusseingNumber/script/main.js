@@ -45,6 +45,14 @@ guessBtn.addEventListener("click", () => {
   }
 });
 
+// the input is not inside a <form>, so wire Enter to submit the guess
+guessInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    guessBtn.click();
+  }
+});
+
 function setMessage(msg, color) {
   message.style.color = color;
   message.textContent = msg;
