@@ -98,5 +98,14 @@
     return states;
   }
 
-  return { keyStates, WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, CODE_TO_LETTER, letterFromKey, normalizeLetter, isLetter, isValidGuess, scoreGuess, dayNumber, dailyWord };
+  const SQUARES = { correct: '\u{1F7E9}', present: '\u{1F7E8}', absent: '\u2B1B' };
+
+  function shareText(day, guesses, answer) {
+    const won = guesses.includes(answer);
+    const header = 'وردل عربي ' + (day + 1) + ' ' + (won ? guesses.length : 'X') + '/' + MAX_GUESSES;
+    const rows = guesses.map((guess) => '\u200F' + scoreGuess(guess, answer).map((r) => SQUARES[r]).join(''));
+    return header + '\n\n' + rows.join('\n');
+  }
+
+  return { shareText, keyStates, WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, CODE_TO_LETTER, letterFromKey, normalizeLetter, isLetter, isValidGuess, scoreGuess, dayNumber, dailyWord };
 });

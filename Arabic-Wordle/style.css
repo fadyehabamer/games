@@ -107,6 +107,42 @@ h1 {
   font-weight: 600;
 }
 
+.share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.share[hidden],
+.share-text[hidden] {
+  display: none;
+}
+
+#share-btn {
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: var(--correct);
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.share-text {
+  width: min(100%, 260px);
+  padding: 8px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  resize: none;
+}
+
 .keyboard {
   display: flex;
   flex-direction: column;

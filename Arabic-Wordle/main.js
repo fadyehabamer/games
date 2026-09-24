@@ -1,10 +1,13 @@
 (function () {
-  const { WORD_LENGTH, MAX_GUESSES, keyStates, scoreGuess, isValidGuess, letterFromKey, dayNumber, dailyWord } = window.WordleRules;
+  const { WORD_LENGTH, MAX_GUESSES, keyStates, shareText, scoreGuess, isValidGuess, letterFromKey, dayNumber, dailyWord } = window.WordleRules;
 
   const boardEl = document.getElementById('board');
   const keyboardEl = document.getElementById('keyboard');
   const statusEl = document.getElementById('status');
   const puzzleEl = document.getElementById('puzzle');
+  const shareBox = document.getElementById('share');
+  const shareBtn = document.getElementById('share-btn');
+  const shareOutput = document.getElementById('share-text');
   const SAVE_KEY = 'games-arabic-wordle';
 
   const KEY_ROWS = [
@@ -131,7 +134,24 @@
 
   function checkFinished() {
     finished = guesses.includes(answer) || guesses.length >= MAX_GUESSES;
+    shareBox.hidden = !finished;
     return finished;
+  }
+
+  function share() {
+    const text = shareText(day, guesses, answer);
+    const fallback = () => {
+      shareOutput.value = text;
+      shareOutput.hidden = false;
+      shareOutput.focus();
+      shareOutput.select();
+      announce('انسخ النتيجة من المربع.');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => announce('نُسخت النتيجة، الصقها أينما تريد.'), fallback);
+    } else {
+      fallback();
+    }
   }
 
   function announce(message) {
@@ -198,6 +218,8 @@
       press(letter);
     }
   });
+
+  shareBtn.addEventListener('click', share);
 
   puzzleEl.textContent = 'كلمة اليوم رقم ' + (day + 1);
   restore();
