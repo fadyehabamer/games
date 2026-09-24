@@ -125,6 +125,13 @@ h1 {
   color: var(--ink);
   background: rgba(88, 166, 255, 0.25);
   border-bottom: 2px solid var(--accent);
+  animation: blink 1s steps(2, jump-none) infinite;
+}
+
+@keyframes blink {
+  50% {
+    border-bottom-color: transparent;
+  }
 }
 
 .legend {
@@ -184,4 +191,34 @@ button {
 
 button:hover {
   border-color: var(--accent);
+}
+
+@media (max-width: 400px) {
+  .app {
+    padding: 16px 12px 32px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .stats dd {
+    font-size: 1.25rem;
+  }
+
+  .passage {
+    padding: 12px;
+    font-size: 1.05rem;
+  }
+
+  .passage:lang(ar),
+  .input:lang(ar) {
+    font-size: 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .passage .current {
+    animation: none;
+  }
 }
