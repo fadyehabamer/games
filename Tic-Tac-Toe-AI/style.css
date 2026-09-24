@@ -77,6 +77,33 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
+.scores {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.scores div {
+  padding: 6px 4px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.scores dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.scores dd {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
 .status {
   min-height: 1.5em;
   margin: 0 0 16px;
@@ -124,6 +151,11 @@ button:focus-visible {
 
 .cell.o {
   color: var(--o);
+}
+
+.cell.win {
+  background: #1f2f1f;
+  border-color: #3fb950;
 }
 
 .actions {

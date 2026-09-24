@@ -7,12 +7,22 @@
   const sideOptions = document.getElementById('side-options');
   const levelOptions = document.getElementById('level-options');
 
+  const scoreEls = {
+    X: document.getElementById('score-x'),
+    O: document.getElementById('score-o'),
+    draw: document.getElementById('score-draw')
+  };
+  const labelX = document.getElementById('label-x');
+  const labelO = document.getElementById('label-o');
+
   const AI_DELAY = 300;
 
   let board = emptyBoard();
   let finished = false;
   let thinking = false;
   let aiTimer = null;
+  let winLine = [];
+  let scores = { X: 0, O: 0, draw: 0 };
   const cells = [];
 
   function mode() {
@@ -54,9 +64,19 @@
       btn.textContent = board[i] || '';
       btn.classList.toggle('x', board[i] === 'X');
       btn.classList.toggle('o', board[i] === 'O');
+      btn.classList.toggle('win', winLine.includes(i));
       btn.setAttribute('aria-label', cellLabel(i));
       btn.setAttribute('aria-disabled', String(finished || thinking || board[i] !== null));
     });
+  }
+
+  function renderScores() {
+    const computer = computerSide();
+    labelX.textContent = computer ? (computer === 'X' ? 'Computer (X)' : 'You (X)') : 'X';
+    labelO.textContent = computer ? (computer === 'O' ? 'Computer (O)' : 'You (O)') : 'O';
+    scoreEls.X.textContent = String(scores.X);
+    scoreEls.O.textContent = String(scores.O);
+    scoreEls.draw.textContent = String(scores.draw);
   }
 
   function announce(message) {
@@ -74,9 +94,12 @@
     const computer = computerSide();
     if (win) {
       finished = true;
+      winLine = win.line;
+      scores[win.player] += 1;
       announce(resultMessage(win.player));
     } else if (isFull(board)) {
       finished = true;
+      scores.draw += 1;
       announce('Draw.');
     } else if (computer && nextPlayer(board) === computer) {
       thinking = true;
@@ -88,6 +111,7 @@
       announce(nextPlayer(board) + ' to move.');
     }
     render();
+    renderScores();
   }
 
   function computerTurn() {
@@ -111,6 +135,7 @@
     thinking = false;
     board = emptyBoard();
     finished = false;
+    winLine = [];
     sideOptions.disabled = mode() !== 'ai';
     levelOptions.disabled = mode() !== 'ai';
     afterMove();
@@ -118,7 +143,10 @@
 
   newRoundBtn.addEventListener('click', newRound);
   document.querySelectorAll('input[name="mode"], input[name="side"], input[name="level"]').forEach((input) => {
-    input.addEventListener('change', newRound);
+    input.addEventListener('change', () => {
+      scores = { X: 0, O: 0, draw: 0 };
+      newRound();
+    });
   });
 
   build();
