@@ -11,10 +11,16 @@
   <main class="game">
     <header class="top">
       <h1>2048</h1>
+      <div class="scores">
+        <div class="score-box"><span class="label">Score</span><span id="score" class="value">0</span></div>
+        <div class="score-box"><span class="label">Best</span><span id="best" class="value">0</span></div>
+      </div>
+    </header>
+    <div class="bar">
       <div class="actions">
         <button id="new-game" type="button">New game</button>
       </div>
-    </header>
+    </div>
     <p class="help" id="help">Use the arrow keys to slide the tiles. Two equal tiles merge into one.</p>
     <div id="board" class="board" tabindex="0" role="group" aria-label="Game board" aria-describedby="help"></div>
   </main>

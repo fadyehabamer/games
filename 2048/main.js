@@ -3,6 +3,9 @@
 
   const boardEl = document.getElementById('board');
   const newGameBtn = document.getElementById('new-game');
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+  const BEST_KEY = 'games-2048-best';
 
   const KEYS = {
     ArrowLeft: 'left',
@@ -12,6 +15,24 @@
   };
 
   let grid;
+  let score = 0;
+  let best = readBest();
+
+  function readBest() {
+    try {
+      return Number(localStorage.getItem(BEST_KEY)) || 0;
+    } catch (err) {
+      return 0;
+    }
+  }
+
+  function saveBest(value) {
+    try {
+      localStorage.setItem(BEST_KEY, String(value));
+    } catch (err) {
+      return;
+    }
+  }
 
   function tileClass(value) {
     if (!value) return 'tile';
@@ -26,17 +47,25 @@
       cell.textContent = value ? String(value) : '';
       boardEl.appendChild(cell);
     }));
+    scoreEl.textContent = String(score);
+    bestEl.textContent = String(best);
   }
 
   function play(direction) {
     const result = move(grid, direction);
     if (!result.moved) return;
     grid = addRandomTile(result.grid);
+    score += result.gained;
+    if (score > best) {
+      best = score;
+      saveBest(best);
+    }
     render();
   }
 
   function newGame() {
     grid = startGrid();
+    score = 0;
     render();
   }
 
