@@ -109,7 +109,7 @@
     clearTimeout(timer);
     state = createState({ cols: COLS, rows: ROWS });
     phase = 'ready';
-    announce('Press an arrow key to start.');
+    announce('Press an arrow key or swipe to start.');
     updatePause();
     updateScore();
     draw();
@@ -162,9 +162,42 @@
     const dir = KEYS[event.key] || KEYS[event.key.toLowerCase()];
     if (!dir) return;
     event.preventDefault();
+    steer(dir);
+  });
+
+  function steer(dir) {
     if (phase === 'over' || phase === 'paused') return;
     state = turn(state, dir);
     if (phase === 'ready') start();
+  }
+
+  document.querySelectorAll('[data-dir]').forEach((btn) => {
+    btn.addEventListener('click', () => steer(btn.dataset.dir));
+  });
+
+  const SWIPE_MIN = 20;
+  let swipeStart = null;
+
+  canvas.addEventListener('pointerdown', (event) => {
+    swipeStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  });
+
+  canvas.addEventListener('pointermove', (event) => {
+    if (!swipeStart || swipeStart.id !== event.pointerId) return;
+    const dx = event.clientX - swipeStart.x;
+    const dy = event.clientY - swipeStart.y;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < SWIPE_MIN) return;
+    if (Math.abs(dx) > Math.abs(dy)) steer(dx > 0 ? 'right' : 'left');
+    else steer(dy > 0 ? 'down' : 'up');
+    swipeStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  });
+
+  canvas.addEventListener('pointerup', () => {
+    swipeStart = null;
+  });
+
+  canvas.addEventListener('pointercancel', () => {
+    swipeStart = null;
   });
 
   restartBtn.addEventListener('click', () => {
