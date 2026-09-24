@@ -13,18 +13,19 @@ const game = document.querySelector("#game"),
 minNum.textContent = min;
 maxNum.textContent = max;
 
-game.addEventListener("mousedown", function (e) {
-  if (e.target.classList.contains("play-again")) {
-    console.log(e.target);
-    window.location.reload();
-  }
-});
-
 guessBtn.addEventListener("click", () => {
+  // after a win/loss the button reads "Play Again": start a fresh round
+  // (handled on click so Enter/Space work too, not only a mouse press)
+  if (guessBtn.classList.contains("play-again")) {
+    resetGame();
+    return;
+  }
+
   let guess = parseInt(guessInput.value);
 
   if (isNaN(guess) || guess < min || guess > max) {
     setMessage(`Please enter a number between ${min} and ${max} .`, "red");
+    return;
   }
 
   if (guess === winningNum) {
@@ -44,6 +45,14 @@ guessBtn.addEventListener("click", () => {
   }
 });
 
+// the input is not inside a <form>, so wire Enter to submit the guess
+guessInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    guessBtn.click();
+  }
+});
+
 function setMessage(msg, color) {
   message.style.color = color;
   message.textContent = msg;
@@ -57,6 +66,18 @@ function gameOver(won, msg) {
   setMessage(msg, color);
   guessBtn.value = "Play Again";
   guessBtn.className += " play-again ";
+}
+
+function resetGame() {
+  winningNum = getWinningNum(min, max);
+  guessesLeft = 3;
+  guessInput.disabled = false;
+  guessInput.value = "";
+  guessInput.style.borderColor = "";
+  setMessage("", "");
+  guessBtn.value = "Submit";
+  guessBtn.classList.remove("play-again");
+  guessInput.focus();
 }
 
 function getWinningNum(min, max) {
