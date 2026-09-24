@@ -3,6 +3,7 @@
 
   const boardEl = document.getElementById('board');
   const newGameBtn = document.getElementById('new-game');
+  const undoBtn = document.getElementById('undo');
   const scoreEl = document.getElementById('score');
   const bestEl = document.getElementById('best');
   const overlayEl = document.getElementById('overlay');
@@ -24,6 +25,7 @@
   let best = readBest();
   let state = 'playing';
   let keepPlaying = false;
+  let previous = null;
 
   function readBest() {
     try {
@@ -54,6 +56,7 @@
       cell.textContent = value ? String(value) : '';
       boardEl.appendChild(cell);
     }));
+    undoBtn.disabled = previous === null;
     scoreEl.textContent = String(score);
     bestEl.textContent = String(best);
   }
@@ -89,6 +92,7 @@
     if (state !== 'playing') return;
     const result = move(grid, direction);
     if (!result.moved) return;
+    previous = { grid, score };
     grid = addRandomTile(result.grid);
     score += result.gained;
     if (score > best) {
@@ -102,6 +106,7 @@
   function newGame() {
     grid = startGrid();
     score = 0;
+    previous = null;
     state = 'playing';
     keepPlaying = false;
     hideOverlay();
@@ -109,7 +114,25 @@
     render();
   }
 
+  function undo() {
+    if (!previous) return;
+    grid = previous.grid;
+    score = previous.score;
+    previous = null;
+    if (state !== 'playing') {
+      state = 'playing';
+      hideOverlay();
+      boardEl.focus();
+    }
+    announce('Last move undone.');
+    render();
+  }
+
   document.addEventListener('keydown', (event) => {
+    if ((event.key === 'u' || event.key === 'U') && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      undo();
+      return;
+    }
     const direction = KEYS[event.key];
     if (!direction) return;
     event.preventDefault();
@@ -117,6 +140,7 @@
   });
 
   newGameBtn.addEventListener('click', newGame);
+  undoBtn.addEventListener('click', undo);
   tryAgainBtn.addEventListener('click', () => {
     newGame();
     boardEl.focus();
