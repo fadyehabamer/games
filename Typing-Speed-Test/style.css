@@ -33,6 +33,35 @@ h1 {
   font-size: 2rem;
 }
 
+.langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0 0 16px;
+  padding: 8px 12px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.langs legend {
+  padding: 0 4px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.langs label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.langs input {
+  accent-color: var(--accent);
+  width: 1.1em;
+  height: 1.1em;
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -73,6 +102,13 @@ h1 {
   color: var(--muted);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+.passage:lang(ar),
+.input:lang(ar) {
+  font-family: "Segoe UI", Tahoma, "Geeza Pro", "Noto Naskh Arabic", "Noto Sans Arabic", sans-serif;
+  font-size: 1.4rem;
+  line-height: 2;
 }
 
 .passage .correct {

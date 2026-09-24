@@ -12,6 +12,12 @@
       'A small boat drifted across the lake while the sun went down behind the hills. Nobody on the shore said a word until the last light was gone.',
       'Good code is easy to read and easy to change. Pick clear names, keep functions short and write a test before you fix a bug.',
       'Rain tapped on the window all afternoon, so we made tea, found an old board game in the cupboard and forgot about the time.'
+    ],
+    ar: [
+      'القراءة عادة جميلة تفتح أمامنا أبوابا جديدة من المعرفة. عندما نقرأ كل يوم نتعلم كلمات جديدة ونفهم العالم من حولنا بشكل أفضل.',
+      'في الصباح الباكر خرج أحمد إلى الحديقة ليشرب قهوته ويستمع إلى أصوات العصافير. كان الجو هادئا والشمس تشرق ببطء فوق الأشجار.',
+      'تعلم البرمجة يحتاج إلى صبر وتدريب مستمر. ابدأ بمشروع صغير ثم أضف إليه خطوة بعد خطوة حتى يصبح برنامجا مفيدا.',
+      'سافرنا في الصيف إلى مدينة قريبة من البحر. كنا نسبح في النهار ونجلس على الشاطئ في المساء ونتحدث حتى وقت متأخر.'
     ]
   };
 
