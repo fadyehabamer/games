@@ -18,6 +18,7 @@
   const BASE_DELAY = 150;
   const MIN_DELAY = 60;
   const DELAY_STEP = 5;
+  const MAX_QUEUE = 3;
 
   function same(a, b) {
     return a.x === b.x && a.y === b.y;
@@ -51,6 +52,7 @@
       rows,
       snake: [{ x, y }, { x: x - 1, y }, { x: x - 2, y }],
       dir: 'right',
+      queue: [],
       food: null,
       score: 0,
       over: false,
@@ -61,22 +63,25 @@
   }
 
   function turn(state, dir) {
-    if (!DIRS[dir] || dir === OPPOSITE[state.dir]) return state;
-    return { ...state, dir };
+    if (!DIRS[dir] || state.queue.length >= MAX_QUEUE) return state;
+    const last = state.queue.length ? state.queue[state.queue.length - 1] : state.dir;
+    if (dir === last || dir === OPPOSITE[last]) return state;
+    return { ...state, queue: [...state.queue, dir] };
   }
 
   function step(state, rng = Math.random) {
     if (state.over) return state;
-    const dir = state.dir;
+    const dir = state.queue.length ? state.queue[0] : state.dir;
+    const queue = state.queue.slice(1);
     const head = state.snake[0];
     const next = { x: head.x + DIRS[dir].x, y: head.y + DIRS[dir].y };
     const eating = state.food !== null && same(next, state.food);
     const body = eating ? state.snake : state.snake.slice(0, -1);
     const hitWall = next.x < 0 || next.y < 0 || next.x >= state.cols || next.y >= state.rows;
     if (hitWall || body.some((p) => same(p, next))) {
-      return { ...state, dir, over: true };
+      return { ...state, dir, queue, over: true };
     }
-    const moved = { ...state, dir, snake: [next, ...body] };
+    const moved = { ...state, dir, queue, snake: [next, ...body] };
     if (eating) {
       moved.score = state.score + 1;
       moved.food = placeFood(moved, rng);
@@ -92,5 +97,5 @@
     return Math.max(MIN_DELAY, BASE_DELAY - score * DELAY_STEP);
   }
 
-  return { DIRS, BASE_DELAY, MIN_DELAY, tickDelay, OPPOSITE, createState, placeFood, freeCells, turn, step };
+  return { DIRS, MAX_QUEUE, BASE_DELAY, MIN_DELAY, tickDelay, OPPOSITE, createState, placeFood, freeCells, turn, step };
 });
