@@ -4,12 +4,42 @@
   const gridEl = document.getElementById('grid');
   const statusEl = document.getElementById('status');
   const newGameBtn = document.getElementById('new-game');
+  const movesEl = document.getElementById('moves');
+  const timeEl = document.getElementById('time');
 
   const MISMATCH_DELAY = 800;
 
   let game;
   let hideTimer = null;
   let buttons = [];
+  let startedAt = null;
+  let elapsed = 0;
+  let clock = null;
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return m + ':' + String(s).padStart(2, '0');
+  }
+
+  function updateStats() {
+    movesEl.textContent = String(game.moves);
+    timeEl.textContent = formatTime(elapsed);
+  }
+
+  function startClock() {
+    startedAt = Date.now();
+    clock = setInterval(() => {
+      elapsed = Math.floor((Date.now() - startedAt) / 1000);
+      updateStats();
+    }, 250);
+  }
+
+  function stopClock() {
+    clearInterval(clock);
+    clock = null;
+    if (startedAt !== null) elapsed = Math.floor((Date.now() - startedAt) / 1000);
+  }
 
   function build() {
     gridEl.textContent = '';
@@ -55,22 +85,30 @@
     if (hideTimer !== null) settle();
     const outcome = flip(game, index);
     if (outcome.result === 'ignored') return;
+    if (startedAt === null) startClock();
     game = outcome.game;
     render();
+    updateStats();
     if (outcome.result === 'mismatch') {
       hideTimer = setTimeout(settle, MISMATCH_DELAY);
     } else if (outcome.result === 'match' && isComplete(game)) {
-      announce('All pairs found.');
+      stopClock();
+      updateStats();
+      announce('All pairs found in ' + game.moves + ' moves and ' + formatTime(elapsed) + '.');
     }
   }
 
   function newGame() {
     clearTimeout(hideTimer);
     hideTimer = null;
+    stopClock();
+    startedAt = null;
+    elapsed = 0;
     game = createGame();
     announce('');
     build();
     render();
+    updateStats();
   }
 
   newGameBtn.addEventListener('click', newGame);

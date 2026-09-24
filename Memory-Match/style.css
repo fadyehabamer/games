@@ -64,6 +64,27 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
+.stats {
+  display: flex;
+  gap: 24px;
+  margin: 12px 0 0;
+}
+
+.stats div {
+  display: flex;
+  gap: 6px;
+}
+
+.stats dt {
+  color: var(--muted);
+}
+
+.stats dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
 .help {
   color: var(--muted);
   margin: 12px 0 16px;
