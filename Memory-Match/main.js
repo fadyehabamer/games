@@ -1,11 +1,13 @@
 (function () {
-  const { createGame, flip, hideOpen, isComplete } = window.MemoryRules;
+  const { createGame, flip, hideOpen, isComplete, isBetter } = window.MemoryRules;
 
   const gridEl = document.getElementById('grid');
   const statusEl = document.getElementById('status');
   const newGameBtn = document.getElementById('new-game');
   const movesEl = document.getElementById('moves');
   const timeEl = document.getElementById('time');
+  const bestEl = document.getElementById('best');
+  const BEST_KEY = 'games-memory-best';
 
   const MISMATCH_DELAY = 800;
 
@@ -15,6 +17,25 @@
   let startedAt = null;
   let elapsed = 0;
   let clock = null;
+  let best = readBest();
+
+  function readBest() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(BEST_KEY));
+      if (saved && Number.isFinite(saved.moves) && Number.isFinite(saved.seconds)) return saved;
+    } catch (err) {
+      return null;
+    }
+    return null;
+  }
+
+  function saveBest(score) {
+    try {
+      localStorage.setItem(BEST_KEY, JSON.stringify(score));
+    } catch (err) {
+      return;
+    }
+  }
 
   function formatTime(seconds) {
     const m = Math.floor(seconds / 60);
@@ -25,6 +46,7 @@
   function updateStats() {
     movesEl.textContent = String(game.moves);
     timeEl.textContent = formatTime(elapsed);
+    bestEl.textContent = best ? best.moves + ' moves, ' + formatTime(best.seconds) : 'none yet';
   }
 
   function startClock() {
@@ -93,8 +115,14 @@
       hideTimer = setTimeout(settle, MISMATCH_DELAY);
     } else if (outcome.result === 'match' && isComplete(game)) {
       stopClock();
+      const score = { moves: game.moves, seconds: elapsed };
+      const record = isBetter(score, best);
+      if (record) {
+        best = score;
+        saveBest(best);
+      }
       updateStats();
-      announce('All pairs found in ' + game.moves + ' moves and ' + formatTime(elapsed) + '.');
+      announce('All pairs found in ' + game.moves + ' moves and ' + formatTime(elapsed) + '.' + (record ? ' New best!' : ''));
     }
   }
 

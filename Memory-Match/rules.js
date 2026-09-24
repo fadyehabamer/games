@@ -64,5 +64,11 @@
     return game.matches * 2 === game.cards.length;
   }
 
-  return { SYMBOLS, shuffle, createDeck, createGame, flip, hideOpen, isComplete };
+  function isBetter(score, best) {
+    if (!best) return true;
+    if (score.moves !== best.moves) return score.moves < best.moves;
+    return score.seconds < best.seconds;
+  }
+
+  return { isBetter, SYMBOLS, shuffle, createDeck, createGame, flip, hideOpen, isComplete };
 });
