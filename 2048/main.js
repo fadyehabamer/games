@@ -48,11 +48,14 @@
     return 'tile tile-' + (value > 2048 ? 'super' : value);
   }
 
-  function render() {
+  function render(fresh, merged) {
     boardEl.textContent = '';
-    grid.forEach((row) => row.forEach((value) => {
+    const mergedKeys = new Set((merged || []).map(([r, c]) => r + ':' + c));
+    grid.forEach((row, r) => row.forEach((value, c) => {
       const cell = document.createElement('div');
       cell.className = tileClass(value);
+      if (fresh && fresh[0] === r && fresh[1] === c) cell.classList.add('tile-new');
+      if (mergedKeys.has(r + ':' + c)) cell.classList.add('tile-merged');
       cell.textContent = value ? String(value) : '';
       boardEl.appendChild(cell);
     }));
@@ -88,18 +91,28 @@
     }
   }
 
+  function findNewTile(before, after) {
+    for (let r = 0; r < after.length; r++) {
+      for (let c = 0; c < after[r].length; c++) {
+        if (before[r][c] === 0 && after[r][c] !== 0) return [r, c];
+      }
+    }
+    return null;
+  }
+
   function play(direction) {
     if (state !== 'playing') return;
     const result = move(grid, direction);
     if (!result.moved) return;
     previous = { grid, score };
     grid = addRandomTile(result.grid);
+    const fresh = findNewTile(result.grid, grid);
     score += result.gained;
     if (score > best) {
       best = score;
       saveBest(best);
     }
-    render();
+    render(fresh, result.merged);
     checkEnd();
   }
 

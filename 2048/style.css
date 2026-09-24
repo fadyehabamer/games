@@ -139,6 +139,31 @@ button:focus-visible,
   color: #1b1b1b;
 }
 
+.tile-new {
+  animation: pop-in 160ms ease-out;
+}
+
+.tile-merged {
+  animation: bump 160ms ease-out;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bump {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
 .tile-2 { background: #eee4da; }
 .tile-4 { background: #ede0c8; }
 .tile-8 { background: #f2b179; color: #fff; }
@@ -211,5 +236,12 @@ button:focus-visible,
   .board {
     gap: 8px;
     padding: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile-new,
+  .tile-merged {
+    animation: none;
   }
 }

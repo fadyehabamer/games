@@ -19,19 +19,21 @@
   function slideRow(row) {
     const values = row.filter((v) => v !== 0);
     const out = [];
+    const mergedAt = [];
     let gained = 0;
     for (let i = 0; i < values.length; i++) {
       if (values[i] === values[i + 1]) {
         const merged = values[i] * 2;
         out.push(merged);
         gained += merged;
+        mergedAt.push(out.length - 1);
         i++;
       } else {
         out.push(values[i]);
       }
     }
     while (out.length < row.length) out.push(0);
-    return { row: out, gained };
+    return { row: out, gained, mergedAt };
   }
 
   function transpose(grid) {
@@ -57,16 +59,25 @@
     return transpose(reverseRows(rows));
   }
 
+  function toCell(direction, r, i, size) {
+    if (direction === 'left') return [r, i];
+    if (direction === 'right') return [r, size - 1 - i];
+    if (direction === 'up') return [i, r];
+    return [size - 1 - i, r];
+  }
+
   function move(grid, direction) {
     let gained = 0;
-    const slid = toRows(grid, direction).map((row) => {
+    const merged = [];
+    const slid = toRows(grid, direction).map((row, r) => {
       const result = slideRow(row);
       gained += result.gained;
+      result.mergedAt.forEach((i) => merged.push(toCell(direction, r, i, row.length)));
       return result.row;
     });
     const next = fromRows(slid, direction);
     const moved = next.some((row, r) => row.some((v, c) => v !== grid[r][c]));
-    return { grid: next, gained, moved };
+    return { grid: next, gained, moved, merged };
   }
 
   function emptyCells(grid) {
