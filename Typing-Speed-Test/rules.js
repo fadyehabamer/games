@@ -35,5 +35,37 @@
     return runs;
   }
 
-  return { PASSAGES, charStates, toRuns };
+  function countNewInput(target, before, after) {
+    let common = 0;
+    while (common < before.length && common < after.length && before[common] === after[common]) common++;
+    let keystrokes = 0;
+    let mistakes = 0;
+    for (let i = common; i < after.length; i++) {
+      keystrokes++;
+      if (after[i] !== target[i]) mistakes++;
+    }
+    return { keystrokes, mistakes };
+  }
+
+  function correctCount(target, typed) {
+    let count = 0;
+    for (let i = 0; i < typed.length && i < target.length; i++) {
+      if (typed[i] === target[i]) count++;
+    }
+    return count;
+  }
+
+  function stats({ target, typed, elapsedMs, keystrokes, mistakes }) {
+    const minutes = elapsedMs / 60000;
+    const correct = correctCount(target, typed);
+    const wpm = minutes > 0 ? Math.round(correct / 5 / minutes) : 0;
+    const accuracy = keystrokes > 0 ? Math.round(((keystrokes - mistakes) / keystrokes) * 100) : 100;
+    return { wpm, accuracy: Math.max(0, accuracy), correct };
+  }
+
+  function isFinished(target, typed) {
+    return typed.length >= target.length;
+  }
+
+  return { PASSAGES, charStates, toRuns, countNewInput, correctCount, stats, isFinished };
 });
