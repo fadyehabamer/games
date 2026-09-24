@@ -2,7 +2,7 @@
 
 > Browser games built with JS & CSS
 
-**7 demos** · 🔗 **[Live gallery](https://fadyehabamer.github.io/games/)** — every demo is deployed to GitHub Pages.
+**8 demos** · 🔗 **[Live gallery](https://fadyehabamer.github.io/games/)** — every demo is deployed to GitHub Pages.
 
 | Demo | Description | Preview |
 |------|-------------|---------|
@@ -13,6 +13,7 @@
 | [`Memory-Match`](./Memory-Match/) | Card matching game with a move counter, timer and saved best score | [🔗 Live](https://fadyehabamer.github.io/games/Memory-Match/) |
 | [`Tic-Tac-Toe-AI`](./Tic-Tac-Toe-AI/) | Tic-tac-toe for two players or against a minimax computer, with an easy mode | [🔗 Live](https://fadyehabamer.github.io/games/Tic-Tac-Toe-AI/) |
 | [`Typing-Speed-Test`](./Typing-Speed-Test/) | Typing test with English and Arabic passages, live highlighting, WPM and accuracy | [🔗 Live](https://fadyehabamer.github.io/games/Typing-Speed-Test/) |
+| [`Arabic-Wordle`](./Arabic-Wordle/) | Daily five-letter Arabic word game with an RTL board and Arabic keyboard | [🔗 Live](https://fadyehabamer.github.io/games/Arabic-Wordle/) |
 
 ---
 
