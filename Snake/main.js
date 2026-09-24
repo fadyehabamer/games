@@ -5,6 +5,7 @@
   const ctx = canvas.getContext('2d');
   const statusEl = document.getElementById('status');
   const restartBtn = document.getElementById('restart');
+  const pauseBtn = document.getElementById('pause');
   const scoreEl = document.getElementById('score');
   const bestEl = document.getElementById('best');
   const BEST_KEY = 'games-snake-best';
@@ -96,6 +97,7 @@
   function finish() {
     phase = 'over';
     clearTimeout(timer);
+    updatePause();
     if (state.won) {
       announce('You filled the board. Final score ' + state.score + '. Press Enter to play again.');
     } else {
@@ -108,6 +110,7 @@
     state = createState({ cols: COLS, rows: ROWS });
     phase = 'ready';
     announce('Press an arrow key to start.');
+    updatePause();
     updateScore();
     draw();
   }
@@ -115,7 +118,32 @@
   function start() {
     phase = 'running';
     announce('');
+    updatePause();
     timer = setTimeout(tick, tickDelay(state.score));
+  }
+
+  function updatePause() {
+    pauseBtn.disabled = phase !== 'running' && phase !== 'paused';
+    pauseBtn.setAttribute('aria-pressed', String(phase === 'paused'));
+    pauseBtn.textContent = phase === 'paused' ? 'Resume' : 'Pause';
+  }
+
+  function pause() {
+    if (phase !== 'running') return;
+    clearTimeout(timer);
+    phase = 'paused';
+    announce('Paused. Press Space or P to carry on.');
+    updatePause();
+  }
+
+  function resume() {
+    if (phase !== 'paused') return;
+    start();
+  }
+
+  function togglePause() {
+    if (phase === 'running') pause();
+    else if (phase === 'paused') resume();
   }
 
   document.addEventListener('keydown', (event) => {
@@ -125,10 +153,16 @@
       reset();
       return;
     }
+    if (event.key === ' ' || event.key === 'p' || event.key === 'P') {
+      if (event.key === ' ' && event.target.closest && event.target.closest('button')) return;
+      event.preventDefault();
+      togglePause();
+      return;
+    }
     const dir = KEYS[event.key] || KEYS[event.key.toLowerCase()];
     if (!dir) return;
     event.preventDefault();
-    if (phase === 'over') return;
+    if (phase === 'over' || phase === 'paused') return;
     state = turn(state, dir);
     if (phase === 'ready') start();
   });
@@ -136,6 +170,12 @@
   restartBtn.addEventListener('click', () => {
     reset();
     canvas.focus();
+  });
+
+  pauseBtn.addEventListener('click', togglePause);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pause();
   });
 
   window.addEventListener('resize', resize);
