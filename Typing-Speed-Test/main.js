@@ -6,6 +6,9 @@
   const wpmEl = document.getElementById('wpm');
   const accuracyEl = document.getElementById('accuracy');
   const timeEl = document.getElementById('time');
+  const statusEl = document.getElementById('status');
+  const restartBtn = document.getElementById('restart');
+  const nextBtn = document.getElementById('next');
 
   const LANGS = {
     en: { lang: 'en', dir: 'ltr' },
@@ -34,8 +37,8 @@
     return result;
   }
 
-  function pickPassage() {
-    const list = PASSAGES[language];
+  function pickPassage(avoid) {
+    const list = PASSAGES[language].filter((p) => p !== avoid);
     return list[Math.floor(Math.random() * list.length)];
   }
 
@@ -57,6 +60,7 @@
     finishedAt = null;
     inputEl.readOnly = false;
     inputEl.value = '';
+    statusEl.textContent = '';
     applyLanguage();
     render();
     updateStats();
@@ -77,7 +81,19 @@
     finishedAt = Date.now();
     clearInterval(ticker);
     inputEl.readOnly = true;
-    updateStats();
+    const result = updateStats();
+    const seconds = Math.round(elapsed() / 1000);
+    statusEl.textContent = 'Done: ' + result.wpm + ' WPM at ' + result.accuracy + '% accuracy in ' + seconds + ' seconds. Press Escape or Restart to try again.';
+  }
+
+  function restart() {
+    reset(target);
+    inputEl.focus();
+  }
+
+  function nextPassage() {
+    reset(pickPassage(target));
+    inputEl.focus();
   }
 
   inputEl.addEventListener('input', () => {
@@ -100,6 +116,16 @@
   });
 
   inputEl.addEventListener('paste', (event) => event.preventDefault());
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      restart();
+    }
+  });
+
+  restartBtn.addEventListener('click', restart);
+  nextBtn.addEventListener('click', nextPassage);
 
   document.querySelectorAll('input[name="lang"]').forEach((radio) => {
     radio.addEventListener('change', () => {

@@ -21,9 +21,14 @@
       <div><dt>Time</dt><dd id="time">0s</dd></div>
     </dl>
     <p id="passage" class="passage" aria-describedby="legend"></p>
-    <p id="legend" class="legend">Correct letters turn green, mistakes turn red. The clock starts with your first key. WPM counts five correct characters as one word.</p>
+    <p id="legend" class="legend">Correct letters turn green, mistakes turn red. The clock starts with your first key. WPM counts five correct characters as one word. Escape restarts.</p>
     <label class="input-label" for="input">Type the passage here</label>
-    <textarea id="input" class="input" rows="4" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+    <textarea id="input" class="input" rows="4" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="status"></textarea>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <div class="actions">
+      <button id="restart" type="button">Restart</button>
+      <button id="next" type="button">New passage</button>
+    </div>
   </main>
   <script src="rules.js"></script>
   <script src="main.js"></script>
