@@ -24,6 +24,7 @@
   let winLine = [];
   let scores = { X: 0, O: 0, draw: 0 };
   const cells = [];
+  let focusIndex = 4;
 
   function mode() {
     return document.querySelector('input[name="mode"]:checked').value;
@@ -53,10 +54,34 @@
       btn.type = 'button';
       btn.className = 'cell';
       btn.dataset.index = String(i);
+      btn.tabIndex = i === focusIndex ? 0 : -1;
       btn.addEventListener('click', () => onCell(i));
+      btn.addEventListener('keydown', (event) => onCellKey(event, i));
+      btn.addEventListener('focus', () => setFocus(i, false));
       boardEl.appendChild(btn);
       cells.push(btn);
     }
+  }
+
+  function setFocus(index, move) {
+    focusIndex = index;
+    cells.forEach((btn, i) => {
+      btn.tabIndex = i === index ? 0 : -1;
+    });
+    if (move) cells[index].focus();
+  }
+
+  function onCellKey(event, i) {
+    const row = Math.floor(i / 3);
+    const col = i % 3;
+    let next = null;
+    if (event.key === 'ArrowRight') next = row * 3 + ((col + 1) % 3);
+    else if (event.key === 'ArrowLeft') next = row * 3 + ((col + 2) % 3);
+    else if (event.key === 'ArrowDown') next = ((row + 1) % 3) * 3 + col;
+    else if (event.key === 'ArrowUp') next = ((row + 2) % 3) * 3 + col;
+    if (next === null) return;
+    event.preventDefault();
+    setFocus(next, true);
   }
 
   function render() {
@@ -140,6 +165,15 @@
     levelOptions.disabled = mode() !== 'ai';
     afterMove();
   }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    if (!/^[1-9]$/.test(event.key)) return;
+    const index = Number(event.key) - 1;
+    event.preventDefault();
+    setFocus(index, true);
+    onCell(index);
+  });
 
   newRoundBtn.addEventListener('click', newRound);
   document.querySelectorAll('input[name="mode"], input[name="side"], input[name="level"]').forEach((input) => {

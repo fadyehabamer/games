@@ -158,6 +158,12 @@ button:focus-visible {
   border-color: #3fb950;
 }
 
+.help {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .actions {
   display: flex;
   justify-content: center;
