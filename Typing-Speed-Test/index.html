@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typing Speed Test</title>
+  <meta name="description" content="Check your typing speed and accuracy on short English and Arabic passages, with live highlighting as you type.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>Typing Speed Test</h1>
+    <fieldset class="langs">
+      <legend>Passage language</legend>
+      <label><input type="radio" name="lang" value="en" checked> English</label>
+      <label lang="ar" dir="rtl"><input type="radio" name="lang" value="ar"> العربية</label>
+    </fieldset>
+    <dl class="stats">
+      <div><dt>WPM</dt><dd id="wpm">0</dd></div>
+      <div><dt>Accuracy</dt><dd id="accuracy">100%</dd></div>
+      <div><dt>Time</dt><dd id="time">0s</dd></div>
+    </dl>
+    <p id="passage" class="passage" aria-describedby="legend"></p>
+    <p id="legend" class="legend">Correct letters turn green, mistakes turn red. The clock starts with your first key. WPM counts five correct characters as one word. Escape restarts.</p>
+    <label class="input-label" for="input">Type the passage here</label>
+    <textarea id="input" class="input" rows="4" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="status"></textarea>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <div class="actions">
+      <button id="restart" type="button">Restart</button>
+      <button id="next" type="button">New passage</button>
+    </div>
+  </main>
+  <script src="rules.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

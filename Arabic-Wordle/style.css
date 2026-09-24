@@ -1,0 +1,267 @@
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --border: #30363d;
+  --ink: #e6edf3;
+  --muted: #8b949e;
+  --accent: #58a6ff;
+  --correct: #2f8f46;
+  --present: #b8912a;
+  --absent: #3a3f47;
+  --key: #2d333b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", Tahoma, "Geeza Pro", "Noto Sans Arabic", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+.game {
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 20px 12px 32px;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.puzzle {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.help {
+  margin: 8px 0 16px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 6px;
+  width: min(100%, 330px);
+  margin: 0 auto;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  font-size: clamp(1.4rem, 8vw, 2rem);
+  font-weight: 700;
+}
+
+.tile.filled {
+  border-color: var(--muted);
+}
+
+.tile.correct,
+.key.correct {
+  background: var(--correct);
+  border-color: var(--correct);
+  color: #fff;
+}
+
+.tile.present,
+.key.present {
+  background: var(--present);
+  border-color: var(--present);
+  color: #fff;
+}
+
+.tile.absent,
+.key.absent {
+  background: var(--absent);
+  border-color: var(--absent);
+  color: #c9d1d9;
+}
+
+.tile.reveal {
+  animation: reveal 420ms ease both;
+}
+
+@keyframes reveal {
+  0% {
+    transform: rotateX(0);
+    background: transparent;
+    border-color: var(--muted);
+    color: var(--ink);
+  }
+  49% {
+    transform: rotateX(90deg);
+    background: transparent;
+    border-color: var(--muted);
+    color: var(--ink);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+.row.shake {
+  animation: shake 360ms ease;
+}
+
+@keyframes shake {
+  20%, 60% {
+    transform: translateX(-6px);
+  }
+  40%, 80% {
+    transform: translateX(6px);
+  }
+}
+
+.status {
+  min-height: 1.6em;
+  margin: 14px 0;
+  text-align: center;
+  font-weight: 600;
+}
+
+.share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.share[hidden],
+.share-text[hidden] {
+  display: none;
+}
+
+#share-btn {
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: var(--correct);
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.share-text {
+  width: min(100%, 260px);
+  padding: 8px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  resize: none;
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.key-row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.key {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 52px;
+  padding: 0;
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--key);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.key.wide {
+  flex-grow: 1.6;
+  font-size: 0.95rem;
+}
+
+.key:hover {
+  border-color: var(--accent);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 400px) {
+  .game {
+    padding: 16px 8px 24px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .help {
+    font-size: 0.85rem;
+  }
+
+  .board {
+    width: min(100%, 290px);
+    gap: 5px;
+  }
+
+  .row {
+    gap: 5px;
+  }
+
+  .key-row {
+    gap: 3px;
+  }
+
+  .key {
+    height: 46px;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+
+  .key.wide {
+    font-size: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile.reveal,
+  .row.shake {
+    animation: none;
+  }
+}

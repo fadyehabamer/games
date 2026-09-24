@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>وردل عربي</title>
+  <meta name="description" content="خمّن الكلمة العربية المكونة من خمسة أحرف في ست محاولات. كلمة جديدة كل يوم.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game">
+    <h1>وردل عربي</h1>
+    <p id="puzzle" class="puzzle"></p>
+    <p class="help" id="help">خمّن الكلمة المكونة من خمسة أحرف. الأخضر يعني أن الحرف في مكانه، والأصفر أنه في الكلمة لكن في مكان آخر، والرمادي أنه غير موجود. يمكنك الكتابة من لوحة المفاتيح، وإذا كانت لوحتك إنجليزية فستُقرأ الأزرار حسب ترتيب اللوحة العربية.</p>
+    <div id="board" class="board" role="group" aria-label="لوحة التخمينات" aria-describedby="help"></div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <div id="share" class="share" hidden>
+      <button id="share-btn" type="button">شارك النتيجة</button>
+      <textarea id="share-text" class="share-text" rows="8" readonly hidden aria-label="نص النتيجة"></textarea>
+    </div>
+    <div id="keyboard" class="keyboard" role="group" aria-label="لوحة المفاتيح"></div>
+  </main>
+  <script src="rules.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
