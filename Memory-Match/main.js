@@ -72,10 +72,16 @@
       btn.type = 'button';
       btn.className = 'card';
       btn.dataset.index = String(i);
-      const face = document.createElement('span');
-      face.className = 'face';
-      face.setAttribute('aria-hidden', 'true');
-      btn.appendChild(face);
+      const inner = document.createElement('span');
+      inner.className = 'card-inner';
+      inner.setAttribute('aria-hidden', 'true');
+      const back = document.createElement('span');
+      back.className = 'side back';
+      const front = document.createElement('span');
+      front.className = 'side front';
+      front.textContent = card.glyph;
+      inner.append(back, front);
+      btn.appendChild(inner);
       btn.tabIndex = i === focusIndex ? 0 : -1;
       btn.addEventListener('click', () => choose(i));
       btn.addEventListener('keydown', (event) => onCardKey(event, i));
@@ -91,7 +97,6 @@
       const shown = card.matched || game.open.includes(i);
       btn.classList.toggle('is-open', shown);
       btn.classList.toggle('is-matched', card.matched);
-      btn.querySelector('.face').textContent = shown ? card.glyph : '';
       const label = 'Card ' + (i + 1) + ', ' + (card.matched ? card.key + ', matched' : shown ? card.key : 'face down');
       btn.setAttribute('aria-label', label);
     });

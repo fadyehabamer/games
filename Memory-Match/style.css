@@ -100,32 +100,82 @@ button:focus-visible {
 
 .card {
   aspect-ratio: 3 / 4;
-  border: 1px solid var(--border);
+  border: 0;
   border-radius: 10px;
-  background: var(--back);
+  background: none;
+  padding: 0;
+  perspective: 700px;
+}
+
+.card-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 320ms ease;
+}
+
+.card.is-open .card-inner {
+  transform: rotateY(180deg);
+}
+
+.side {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-.card.is-open {
+.back {
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.08) 0 6px, transparent 6px 12px),
+    var(--back);
+}
+
+.front {
+  transform: rotateY(180deg);
   background: var(--panel);
+  font-size: clamp(1.6rem, 9vw, 2.6rem);
+  line-height: 1;
 }
 
 .card.is-matched {
-  background: var(--match);
-  border-color: var(--match);
   cursor: default;
 }
 
-.face {
-  font-size: clamp(1.6rem, 9vw, 2.6rem);
-  line-height: 1;
+.card.is-matched .front {
+  background: var(--match);
+  border-color: var(--match);
 }
 
 .status {
   min-height: 1.5em;
   margin: 16px 0 0;
   text-align: center;
+}
+
+@media (max-width: 400px) {
+  .game {
+    padding: 16px 12px 32px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .grid {
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-inner {
+    transition: none;
+  }
 }
