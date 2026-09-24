@@ -13,14 +13,14 @@ const game = document.querySelector("#game"),
 minNum.textContent = min;
 maxNum.textContent = max;
 
-game.addEventListener("mousedown", function (e) {
-  if (e.target.classList.contains("play-again")) {
-    console.log(e.target);
-    window.location.reload();
-  }
-});
-
 guessBtn.addEventListener("click", () => {
+  // after a win/loss the button reads "Play Again": start a fresh round
+  // (handled on click so Enter/Space work too, not only a mouse press)
+  if (guessBtn.classList.contains("play-again")) {
+    resetGame();
+    return;
+  }
+
   let guess = parseInt(guessInput.value);
 
   if (isNaN(guess) || guess < min || guess > max) {
@@ -58,6 +58,18 @@ function gameOver(won, msg) {
   setMessage(msg, color);
   guessBtn.value = "Play Again";
   guessBtn.className += " play-again ";
+}
+
+function resetGame() {
+  winningNum = getWinningNum(min, max);
+  guessesLeft = 3;
+  guessInput.disabled = false;
+  guessInput.value = "";
+  guessInput.style.borderColor = "";
+  setMessage("", "");
+  guessBtn.value = "Submit";
+  guessBtn.classList.remove("play-again");
+  guessInput.focus();
 }
 
 function getWinningNum(min, max) {
