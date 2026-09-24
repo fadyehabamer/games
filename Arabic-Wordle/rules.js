@@ -85,5 +85,18 @@
     return result;
   }
 
-  return { WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, CODE_TO_LETTER, letterFromKey, normalizeLetter, isLetter, isValidGuess, scoreGuess, dayNumber, dailyWord };
+  const RANK = { absent: 1, present: 2, correct: 3 };
+
+  function keyStates(guesses, answer) {
+    const states = {};
+    guesses.forEach((guess) => {
+      const result = scoreGuess(guess, answer);
+      Array.from(guess).forEach((letter, i) => {
+        if (!states[letter] || RANK[result[i]] > RANK[states[letter]]) states[letter] = result[i];
+      });
+    });
+    return states;
+  }
+
+  return { keyStates, WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, CODE_TO_LETTER, letterFromKey, normalizeLetter, isLetter, isValidGuess, scoreGuess, dayNumber, dailyWord };
 });

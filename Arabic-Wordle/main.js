@@ -1,5 +1,5 @@
 (function () {
-  const { WORD_LENGTH, MAX_GUESSES, scoreGuess, isValidGuess, letterFromKey, dayNumber, dailyWord } = window.WordleRules;
+  const { WORD_LENGTH, MAX_GUESSES, keyStates, scoreGuess, isValidGuess, letterFromKey, dayNumber, dailyWord } = window.WordleRules;
 
   const boardEl = document.getElementById('board');
   const keyboardEl = document.getElementById('keyboard');
@@ -87,6 +87,22 @@
     }
   }
 
+  function renderKeys() {
+    const states = keyStates(guesses, answer);
+    keyboardEl.querySelectorAll('.key').forEach((btn) => {
+      const key = btn.dataset.key;
+      if (key === 'enter' || key === 'backspace') return;
+      const state = states[key];
+      btn.classList.remove('correct', 'present', 'absent');
+      if (state) {
+        btn.classList.add(state);
+        btn.setAttribute('aria-label', key + '، ' + RESULT_LABELS[state]);
+      } else {
+        btn.removeAttribute('aria-label');
+      }
+    });
+  }
+
   function save() {
     try {
       localStorage.setItem(SAVE_KEY, JSON.stringify({ day, guesses }));
@@ -141,6 +157,7 @@
     current = [];
     save();
     render();
+    renderKeys();
     if (checkFinished()) {
       announce(endMessage());
     } else {
@@ -187,5 +204,6 @@
   buildBoard();
   buildKeyboard();
   render();
+  renderKeys();
   if (checkFinished()) announce(endMessage());
 })();
