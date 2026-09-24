@@ -1,9 +1,11 @@
 (function () {
-  const { WORD_LENGTH, MAX_GUESSES, WORDS, scoreGuess, isValidGuess, letterFromKey } = window.WordleRules;
+  const { WORD_LENGTH, MAX_GUESSES, scoreGuess, isValidGuess, letterFromKey, dayNumber, dailyWord } = window.WordleRules;
 
   const boardEl = document.getElementById('board');
   const keyboardEl = document.getElementById('keyboard');
   const statusEl = document.getElementById('status');
+  const puzzleEl = document.getElementById('puzzle');
+  const SAVE_KEY = 'games-arabic-wordle';
 
   const KEY_ROWS = [
     Array.from('ضصثقفغعهخحجد'),
@@ -17,7 +19,9 @@
     absent: 'غير موجود'
   };
 
-  let answer = WORDS[Math.floor(Math.random() * WORDS.length)];
+  const today = new Date();
+  const day = dayNumber(today);
+  const answer = dailyWord(today);
   let guesses = [];
   let current = [];
   let finished = false;
@@ -83,6 +87,37 @@
     }
   }
 
+  function save() {
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify({ day, guesses }));
+    } catch (err) {
+      return;
+    }
+  }
+
+  function restore() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SAVE_KEY));
+      if (saved && saved.day === day && Array.isArray(saved.guesses)) {
+        guesses = saved.guesses.filter(isValidGuess).slice(0, MAX_GUESSES);
+      }
+    } catch (err) {
+      guesses = [];
+    }
+  }
+
+  function endMessage() {
+    if (guesses[guesses.length - 1] === answer) {
+      return 'أحسنت! عرفت الكلمة في ' + guesses.length + ' من ' + MAX_GUESSES + '. عد غدا لكلمة جديدة.';
+    }
+    return 'انتهت المحاولات. الكلمة كانت: ' + answer + '. عد غدا لكلمة جديدة.';
+  }
+
+  function checkFinished() {
+    finished = guesses.includes(answer) || guesses.length >= MAX_GUESSES;
+    return finished;
+  }
+
   function announce(message) {
     statusEl.textContent = message;
   }
@@ -104,13 +139,10 @@
     }
     guesses.push(guess);
     current = [];
+    save();
     render();
-    if (guess === answer) {
-      finished = true;
-      announce('أحسنت! عرفت الكلمة في ' + guesses.length + ' من ' + MAX_GUESSES + '.');
-    } else if (guesses.length === MAX_GUESSES) {
-      finished = true;
-      announce('انتهت المحاولات. الكلمة كانت: ' + answer + '.');
+    if (checkFinished()) {
+      announce(endMessage());
     } else {
       announce(describe(guess));
     }
@@ -150,7 +182,10 @@
     }
   });
 
+  puzzleEl.textContent = 'كلمة اليوم رقم ' + (day + 1);
+  restore();
   buildBoard();
   buildKeyboard();
   render();
+  if (checkFinished()) announce(endMessage());
 })();

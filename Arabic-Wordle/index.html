@@ -4,12 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>وردل عربي</title>
-  <meta name="description" content="خمّن الكلمة العربية المكونة من خمسة أحرف في ست محاولات.">
+  <meta name="description" content="خمّن الكلمة العربية المكونة من خمسة أحرف في ست محاولات. كلمة جديدة كل يوم.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="game">
     <h1>وردل عربي</h1>
+    <p id="puzzle" class="puzzle"></p>
     <p class="help" id="help">خمّن الكلمة المكونة من خمسة أحرف. الأخضر يعني أن الحرف في مكانه، والأصفر أنه في الكلمة لكن في مكان آخر، والرمادي أنه غير موجود. يمكنك الكتابة من لوحة المفاتيح، وإذا كانت لوحتك إنجليزية فستُقرأ الأزرار حسب ترتيب اللوحة العربية.</p>
     <div id="board" class="board" role="group" aria-label="لوحة التخمينات" aria-describedby="help"></div>
     <p id="status" class="status" role="status" aria-live="polite"></p>

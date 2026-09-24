@@ -50,6 +50,19 @@
     return letters.length === WORD_LENGTH && letters.every(isLetter);
   }
 
+  const EPOCH = Date.UTC(2026, 0, 1);
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
+  function dayNumber(date) {
+    const today = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+    return Math.floor((today - EPOCH) / DAY_MS);
+  }
+
+  function dailyWord(date, words = WORDS) {
+    const n = dayNumber(date);
+    return words[((n % words.length) + words.length) % words.length];
+  }
+
   function scoreGuess(guess, answer) {
     const g = Array.from(guess);
     const a = Array.from(answer);
@@ -72,5 +85,5 @@
     return result;
   }
 
-  return { WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, CODE_TO_LETTER, letterFromKey, normalizeLetter, isLetter, isValidGuess, scoreGuess };
+  return { WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, CODE_TO_LETTER, letterFromKey, normalizeLetter, isLetter, isValidGuess, scoreGuess, dayNumber, dailyWord };
 });

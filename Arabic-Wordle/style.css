@@ -36,6 +36,13 @@ h1 {
   font-size: 2rem;
 }
 
+.puzzle {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .help {
   margin: 8px 0 16px;
   color: var(--muted);
