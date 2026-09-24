@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memory Match</title>
+  <meta name="description" content="Flip two cards at a time and find all eight matching pairs in as few moves as you can.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game">
+    <header class="top">
+      <h1>Memory Match</h1>
+      <button id="new-game" type="button">New game</button>
+    </header>
+    <p class="help" id="help">Flip two cards at a time. Matching pairs stay face up.</p>
+    <div id="grid" class="grid" role="group" aria-label="Cards" aria-describedby="help"></div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </main>
+  <script src="rules.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
