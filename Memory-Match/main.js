@@ -10,10 +10,12 @@
   const BEST_KEY = 'games-memory-best';
 
   const MISMATCH_DELAY = 800;
+  const COLUMNS = 4;
 
   let game;
   let hideTimer = null;
   let buttons = [];
+  let focusIndex = 0;
   let startedAt = null;
   let elapsed = 0;
   let clock = null;
@@ -74,7 +76,10 @@
       face.className = 'face';
       face.setAttribute('aria-hidden', 'true');
       btn.appendChild(face);
+      btn.tabIndex = i === focusIndex ? 0 : -1;
       btn.addEventListener('click', () => choose(i));
+      btn.addEventListener('keydown', (event) => onCardKey(event, i));
+      btn.addEventListener('focus', () => setFocusIndex(i));
       gridEl.appendChild(btn);
       return btn;
     });
@@ -90,6 +95,29 @@
       const label = 'Card ' + (i + 1) + ', ' + (card.matched ? card.key + ', matched' : shown ? card.key : 'face down');
       btn.setAttribute('aria-label', label);
     });
+  }
+
+  function setFocusIndex(index) {
+    focusIndex = index;
+    buttons.forEach((btn, i) => {
+      btn.tabIndex = i === index ? 0 : -1;
+    });
+  }
+
+  function onCardKey(event, index) {
+    const count = buttons.length;
+    let next = null;
+    if (event.key === 'ArrowRight') next = index + 1;
+    else if (event.key === 'ArrowLeft') next = index - 1;
+    else if (event.key === 'ArrowDown') next = index + COLUMNS;
+    else if (event.key === 'ArrowUp') next = index - COLUMNS;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = count - 1;
+    if (next === null) return;
+    event.preventDefault();
+    if (next < 0 || next >= count) return;
+    setFocusIndex(next);
+    buttons[next].focus();
   }
 
   function announce(message) {
@@ -132,6 +160,7 @@
     stopClock();
     startedAt = null;
     elapsed = 0;
+    focusIndex = 0;
     game = createGame();
     announce('');
     build();
