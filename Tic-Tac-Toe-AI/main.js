@@ -1,10 +1,11 @@
 (function () {
-  const { emptyBoard, winner, isFull, play, nextPlayer, other, bestMove } = window.TicTacToe;
+  const { emptyBoard, winner, isFull, play, nextPlayer, other, computerMove } = window.TicTacToe;
 
   const boardEl = document.getElementById('board');
   const statusEl = document.getElementById('status');
   const newRoundBtn = document.getElementById('new-round');
   const sideOptions = document.getElementById('side-options');
+  const levelOptions = document.getElementById('level-options');
 
   const AI_DELAY = 300;
 
@@ -20,6 +21,10 @@
 
   function humanSide() {
     return document.querySelector('input[name="side"]:checked').value;
+  }
+
+  function level() {
+    return document.querySelector('input[name="level"]:checked').value;
   }
 
   function computerSide() {
@@ -88,7 +93,7 @@
   function computerTurn() {
     aiTimer = null;
     thinking = false;
-    const move = bestMove(board, computerSide());
+    const move = computerMove(board, computerSide(), level());
     if (move === null) return;
     board = play(board, move, computerSide());
     afterMove();
@@ -107,11 +112,12 @@
     board = emptyBoard();
     finished = false;
     sideOptions.disabled = mode() !== 'ai';
+    levelOptions.disabled = mode() !== 'ai';
     afterMove();
   }
 
   newRoundBtn.addEventListener('click', newRound);
-  document.querySelectorAll('input[name="mode"], input[name="side"]').forEach((input) => {
+  document.querySelectorAll('input[name="mode"], input[name="side"], input[name="level"]').forEach((input) => {
     input.addEventListener('change', newRound);
   });
 

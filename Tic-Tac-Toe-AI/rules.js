@@ -96,5 +96,15 @@
     return move;
   }
 
-  return { minimax, bestMove, LINES, emptyBoard, other, winner, availableMoves, isFull, play, nextPlayer };
+  function randomMove(board, rng = Math.random) {
+    const moves = availableMoves(board);
+    if (moves.length === 0) return null;
+    return moves[Math.floor(rng() * moves.length)];
+  }
+
+  function computerMove(board, ai, level, rng = Math.random) {
+    return level === 'easy' ? randomMove(board, rng) : bestMove(board, ai);
+  }
+
+  return { randomMove, computerMove, minimax, bestMove, LINES, emptyBoard, other, winner, availableMoves, isFull, play, nextPlayer };
 });

@@ -41,7 +41,7 @@ h1 {
 }
 
 fieldset {
-  flex: 1 1 160px;
+  flex: 1 1 120px;
   margin: 0;
   padding: 8px 12px 10px;
   border: 1px solid var(--border);
