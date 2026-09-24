@@ -28,6 +28,8 @@
   let phase = 'ready';
   let timer = null;
   let best = readBest();
+  let frame = null;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   function readBest() {
     try {
@@ -66,13 +68,27 @@
     if (state.food) {
       ctx.fillStyle = '#f85149';
       ctx.beginPath();
-      ctx.arc((state.food.x + 0.5) * cell, (state.food.y + 0.5) * cell, cell * 0.38, 0, Math.PI * 2);
+      ctx.arc((state.food.x + 0.5) * cell, (state.food.y + 0.5) * cell, cell * foodScale(), 0, Math.PI * 2);
       ctx.fill();
     }
     state.snake.forEach((part, i) => {
       ctx.fillStyle = i === 0 ? '#7ee787' : '#3fb950';
       ctx.fillRect(part.x * cell + 1, part.y * cell + 1, cell - 2, cell - 2);
     });
+  }
+
+  function foodScale() {
+    if (reducedMotion.matches || phase !== 'running') return 0.38;
+    return 0.34 + 0.05 * Math.sin(performance.now() / 160);
+  }
+
+  function animate() {
+    draw();
+    frame = phase === 'running' && !reducedMotion.matches ? requestAnimationFrame(animate) : null;
+  }
+
+  function startAnimation() {
+    if (frame === null && !reducedMotion.matches) frame = requestAnimationFrame(animate);
   }
 
   function announce(message) {
@@ -119,6 +135,7 @@
     phase = 'running';
     announce('');
     updatePause();
+    startAnimation();
     timer = setTimeout(tick, tickDelay(state.score));
   }
 
