@@ -100,6 +100,44 @@ h1 {
   color: #c9d1d9;
 }
 
+.tile.reveal {
+  animation: reveal 420ms ease both;
+}
+
+@keyframes reveal {
+  0% {
+    transform: rotateX(0);
+    background: transparent;
+    border-color: var(--muted);
+    color: var(--ink);
+  }
+  49% {
+    transform: rotateX(90deg);
+    background: transparent;
+    border-color: var(--muted);
+    color: var(--ink);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+.row.shake {
+  animation: shake 360ms ease;
+}
+
+@keyframes shake {
+  20%, 60% {
+    transform: translateX(-6px);
+  }
+  40%, 80% {
+    transform: translateX(6px);
+  }
+}
+
 .status {
   min-height: 1.6em;
   margin: 14px 0;
@@ -182,4 +220,48 @@ h1 {
 button:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 2px;
+}
+
+@media (max-width: 400px) {
+  .game {
+    padding: 16px 8px 24px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .help {
+    font-size: 0.85rem;
+  }
+
+  .board {
+    width: min(100%, 290px);
+    gap: 5px;
+  }
+
+  .row {
+    gap: 5px;
+  }
+
+  .key-row {
+    gap: 3px;
+  }
+
+  .key {
+    height: 46px;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+
+  .key.wide {
+    font-size: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile.reveal,
+  .row.shake {
+    animation: none;
+  }
 }

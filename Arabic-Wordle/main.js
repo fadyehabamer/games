@@ -74,7 +74,7 @@
     });
   }
 
-  function render() {
+  function render(revealRow) {
     for (let r = 0; r < MAX_GUESSES; r++) {
       const guess = guesses[r];
       const letters = guess ? Array.from(guess) : r === guesses.length ? current : [];
@@ -84,6 +84,12 @@
         const letter = letters[c] || '';
         tile.textContent = letter;
         tile.className = 'tile' + (letter ? ' filled' : '') + (result ? ' ' + result[c] : '');
+        if (r === revealRow) {
+          tile.classList.add('reveal');
+          tile.style.animationDelay = c * 120 + 'ms';
+        } else {
+          tile.style.animationDelay = '';
+        }
         if (result) tile.setAttribute('aria-label', letter + '، ' + RESULT_LABELS[result[c]]);
         else tile.removeAttribute('aria-label');
       }
@@ -154,6 +160,14 @@
     }
   }
 
+  function shake() {
+    const row = boardEl.children[guesses.length];
+    if (!row) return;
+    row.classList.remove('shake');
+    void row.offsetWidth;
+    row.classList.add('shake');
+  }
+
   function announce(message) {
     statusEl.textContent = message;
   }
@@ -166,17 +180,19 @@
   function submit() {
     if (current.length < WORD_LENGTH) {
       announce('أكمل خمسة أحرف أولا.');
+      shake();
       return;
     }
     const guess = current.join('');
     if (!isValidGuess(guess)) {
       announce('هذه ليست كلمة صالحة.');
+      shake();
       return;
     }
     guesses.push(guess);
     current = [];
     save();
-    render();
+    render(guesses.length - 1);
     renderKeys();
     if (checkFinished()) {
       announce(endMessage());
