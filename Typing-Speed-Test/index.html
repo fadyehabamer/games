@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typing Speed Test</title>
+  <meta name="description" content="Check your typing speed and accuracy on short English passages, with live highlighting as you type.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>Typing Speed Test</h1>
+    <p id="passage" class="passage" aria-describedby="legend"></p>
+    <p id="legend" class="legend">Correct letters turn green, mistakes turn red.</p>
+    <label class="input-label" for="input">Type the passage here</label>
+    <textarea id="input" class="input" rows="4" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+  </main>
+  <script src="rules.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
