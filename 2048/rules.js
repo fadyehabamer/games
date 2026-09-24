@@ -86,9 +86,25 @@
     return next;
   }
 
+  function canMove(grid) {
+    if (emptyCells(grid).length > 0) return true;
+    for (let r = 0; r < grid.length; r++) {
+      for (let c = 0; c < grid[r].length; c++) {
+        const v = grid[r][c];
+        if (c + 1 < grid[r].length && grid[r][c + 1] === v) return true;
+        if (r + 1 < grid.length && grid[r + 1][c] === v) return true;
+      }
+    }
+    return false;
+  }
+
+  function hasWon(grid, target = 2048) {
+    return grid.some((row) => row.some((v) => v >= target));
+  }
+
   function startGrid(rng = Math.random) {
     return addRandomTile(addRandomTile(createGrid(), rng), rng);
   }
 
-  return { SIZE, createGrid, slideRow, move, emptyCells, addRandomTile, startGrid };
+  return { SIZE, createGrid, slideRow, move, emptyCells, addRandomTile, startGrid, canMove, hasWon };
 });

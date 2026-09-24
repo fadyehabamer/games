@@ -22,7 +22,17 @@
       </div>
     </div>
     <p class="help" id="help">Use the arrow keys to slide the tiles. Two equal tiles merge into one.</p>
-    <div id="board" class="board" tabindex="0" role="group" aria-label="Game board" aria-describedby="help"></div>
+    <div class="board-wrap">
+      <div id="board" class="board" tabindex="0" role="group" aria-label="Game board" aria-describedby="help"></div>
+      <div id="overlay" class="overlay" hidden>
+        <p id="overlay-text" class="overlay-text"></p>
+        <div class="overlay-actions">
+          <button id="keep-going" type="button">Keep going</button>
+          <button id="try-again" type="button">New game</button>
+        </div>
+      </div>
+    </div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
   </main>
   <script src="rules.js"></script>
   <script src="main.js"></script>
