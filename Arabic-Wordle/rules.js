@@ -20,6 +20,22 @@
     'صابون', 'فنجان'
   ];
 
+  const CODE_TO_LETTER = {
+    KeyQ: 'ض', KeyW: 'ص', KeyE: 'ث', KeyR: 'ق', KeyT: 'ف', KeyY: 'غ',
+    KeyU: 'ع', KeyI: 'ه', KeyO: 'خ', KeyP: 'ح', BracketLeft: 'ج', BracketRight: 'د',
+    KeyA: 'ش', KeyS: 'س', KeyD: 'ي', KeyF: 'ب', KeyG: 'ل', KeyH: 'ا',
+    KeyJ: 'ت', KeyK: 'ن', KeyL: 'م', Semicolon: 'ك', Quote: 'ط', Backquote: 'ذ',
+    KeyZ: 'ئ', KeyX: 'ء', KeyC: 'ؤ', KeyV: 'ر', KeyN: 'ى', KeyM: 'ة',
+    Comma: 'و', Period: 'ز', Slash: 'ظ'
+  };
+
+  function letterFromKey(key, code) {
+    const letter = normalizeLetter(key);
+    if (isLetter(letter)) return letter;
+    if (/^[a-zA-Z;',.\/\[\]`]$/.test(key) && CODE_TO_LETTER[code]) return CODE_TO_LETTER[code];
+    return null;
+  }
+
   function normalizeLetter(letter) {
     if (letter === 'أ' || letter === 'إ' || letter === 'آ') return 'ا';
     return letter;
@@ -56,5 +72,5 @@
     return result;
   }
 
-  return { WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, normalizeLetter, isLetter, isValidGuess, scoreGuess };
+  return { WORD_LENGTH, MAX_GUESSES, LETTERS, WORDS, CODE_TO_LETTER, letterFromKey, normalizeLetter, isLetter, isValidGuess, scoreGuess };
 });

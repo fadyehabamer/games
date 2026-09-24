@@ -1,5 +1,5 @@
 (function () {
-  const { WORD_LENGTH, MAX_GUESSES, WORDS, scoreGuess, isValidGuess } = window.WordleRules;
+  const { WORD_LENGTH, MAX_GUESSES, WORDS, scoreGuess, isValidGuess, letterFromKey } = window.WordleRules;
 
   const boardEl = document.getElementById('board');
   const keyboardEl = document.getElementById('keyboard');
@@ -128,6 +128,27 @@
       render();
     }
   }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    const onButton = event.target instanceof HTMLElement && event.target.closest('button');
+    if (event.key === 'Enter') {
+      if (onButton) return;
+      event.preventDefault();
+      press('enter');
+      return;
+    }
+    if (event.key === 'Backspace') {
+      event.preventDefault();
+      press('backspace');
+      return;
+    }
+    const letter = letterFromKey(event.key, event.code);
+    if (letter) {
+      event.preventDefault();
+      press(letter);
+    }
+  });
 
   buildBoard();
   buildKeyboard();
