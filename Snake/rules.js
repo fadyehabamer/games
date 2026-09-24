@@ -15,6 +15,10 @@
 
   const OPPOSITE = { up: 'down', down: 'up', left: 'right', right: 'left' };
 
+  const BASE_DELAY = 150;
+  const MIN_DELAY = 60;
+  const DELAY_STEP = 5;
+
   function same(a, b) {
     return a.x === b.x && a.y === b.y;
   }
@@ -84,5 +88,9 @@
     return moved;
   }
 
-  return { DIRS, OPPOSITE, createState, placeFood, freeCells, turn, step };
+  function tickDelay(score) {
+    return Math.max(MIN_DELAY, BASE_DELAY - score * DELAY_STEP);
+  }
+
+  return { DIRS, BASE_DELAY, MIN_DELAY, tickDelay, OPPOSITE, createState, placeFood, freeCells, turn, step };
 });

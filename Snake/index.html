@@ -15,7 +15,11 @@
         <button id="restart" type="button">Restart</button>
       </div>
     </header>
-    <p class="help" id="help">Arrow keys or WASD to steer.</p>
+    <div class="scores">
+      <p>Score <strong id="score">0</strong></p>
+      <p>Best <strong id="best">0</strong></p>
+    </div>
+    <p class="help" id="help">Arrow keys or WASD to steer. The snake speeds up as it grows.</p>
     <canvas id="board" class="board" width="400" height="400" tabindex="0" role="img" aria-label="Snake board" aria-describedby="help"></canvas>
     <p id="status" class="status" role="status" aria-live="polite"></p>
   </main>

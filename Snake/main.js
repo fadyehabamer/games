@@ -1,14 +1,16 @@
 (function () {
-  const { createState, turn, step } = window.SnakeRules;
+  const { createState, turn, step, tickDelay } = window.SnakeRules;
 
   const canvas = document.getElementById('board');
   const ctx = canvas.getContext('2d');
   const statusEl = document.getElementById('status');
   const restartBtn = document.getElementById('restart');
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+  const BEST_KEY = 'games-snake-best';
 
   const COLS = 20;
   const ROWS = 20;
-  const TICK = 140;
 
   const KEYS = {
     ArrowUp: 'up',
@@ -24,6 +26,28 @@
   let state;
   let phase = 'ready';
   let timer = null;
+  let best = readBest();
+
+  function readBest() {
+    try {
+      return Number(localStorage.getItem(BEST_KEY)) || 0;
+    } catch (err) {
+      return 0;
+    }
+  }
+
+  function saveBest(value) {
+    try {
+      localStorage.setItem(BEST_KEY, String(value));
+    } catch (err) {
+      return;
+    }
+  }
+
+  function updateScore() {
+    scoreEl.textContent = String(state.score);
+    bestEl.textContent = String(best);
+  }
 
   function resize() {
     const ratio = window.devicePixelRatio || 1;
@@ -56,18 +80,27 @@
 
   function tick() {
     state = step(state);
+    if (state.score > best) {
+      best = state.score;
+      saveBest(best);
+    }
+    updateScore();
     draw();
     if (state.over) {
       finish();
       return;
     }
-    timer = setTimeout(tick, TICK);
+    timer = setTimeout(tick, tickDelay(state.score));
   }
 
   function finish() {
     phase = 'over';
     clearTimeout(timer);
-    announce('Game over. You scored ' + state.score + '. Press Enter to play again.');
+    if (state.won) {
+      announce('You filled the board. Final score ' + state.score + '. Press Enter to play again.');
+    } else {
+      announce('Game over. You scored ' + state.score + '. Press Enter to play again.');
+    }
   }
 
   function reset() {
@@ -75,13 +108,14 @@
     state = createState({ cols: COLS, rows: ROWS });
     phase = 'ready';
     announce('Press an arrow key to start.');
+    updateScore();
     draw();
   }
 
   function start() {
     phase = 'running';
     announce('');
-    timer = setTimeout(tick, TICK);
+    timer = setTimeout(tick, tickDelay(state.score));
   }
 
   document.addEventListener('keydown', (event) => {
