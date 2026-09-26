@@ -1,5 +1,7 @@
 # games
 
+[![CI](https://github.com/fadyehabamer/games/actions/workflows/ci.yml/badge.svg)](https://github.com/fadyehabamer/games/actions/workflows/ci.yml)
+
 > Browser games built with JS & CSS
 
 **8 demos** · 🔗 **[Live gallery](https://fadyehabamer.github.io/games/)** — every demo is deployed to GitHub Pages.
